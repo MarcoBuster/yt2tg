@@ -59,7 +59,7 @@ def check_new_videos(channel_id):
 
 def download_then_send(video_id):
     result = ydl.extract_info(f'https://youtube.com/watch?v={video_id}')
-    urllib.request.urlretrieve(result['thumbnail'], 'tmp/thumb.jpg')
+    urllib.request.urlretrieve(result['thumbnail'], f'{ABSOLUTE_PATH}/tmp/thumb.jpg')
     if config.MODE == 'audio':
         bot.send_file(
             config.TELEGRAM_CHAT_ID,
