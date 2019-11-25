@@ -78,6 +78,7 @@ def download_then_send(video_id):
         os.remove('tmp/tmp_file.mp4')
     os.remove('tmp/thumb.jpg')
     c.execute('INSERT INTO urls VALUES(?)', (video_id, ))
+    conn.commit()
 
 
 def main():
