@@ -1,0 +1,3 @@
+youtube-python
+youtube_dl
+telethon
