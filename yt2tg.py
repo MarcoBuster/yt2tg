@@ -76,7 +76,7 @@ def download_then_send(video_id):
         )
         os.remove(f'{ABSOLUTE_PATH}/tmp/tmp_file.mp3')
     elif config.MODE == 'video':
-        bot.send_file(config.TELEGRAM_CHAT_ID, file='tmp/tmp_file.mp4')
+        bot.send_file(config.TELEGRAM_CHAT_ID, file=f'{ABSOLUTE_PATH}/tmp/tmp_file.mp4')
         os.remove(f'{ABSOLUTE_PATH}/tmp/tmp_file.mp4')
     os.remove(f'{ABSOLUTE_PATH}/tmp/thumb.jpg')
     c.execute('INSERT INTO urls VALUES(?)', (video_id, ))
