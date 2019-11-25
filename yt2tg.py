@@ -88,6 +88,8 @@ def main():
     for channel_id in config.YOUTUBE_CHANNEL_IDS:
         to_download.extend(check_new_videos(channel_id))
 
+    to_download.reverse()
+
     for video_id in to_download:
         download_then_send(video_id)
 
