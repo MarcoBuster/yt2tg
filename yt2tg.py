@@ -9,6 +9,8 @@ from telethon.tl import types
 
 import config
 
+ABSOLUTE_PATH = os.path.dirname(os.path.abspath(__file__))
+
 bot = TelegramClient(
     'bot',
     api_id=config.TELEGRAM_API_ID,
@@ -20,7 +22,7 @@ api = youtube.API(
     api_key=config.YOUTUBE_API_KEY,
 )
 ydl = youtube_dl.YoutubeDL({
-    'outtmpl': 'tmp/tmp_file.%(ext)s',
+    'outtmpl': f'{ABSOLUTE_PATH}/tmp/tmp_file.%(ext)s',
     'format': 'bestaudio/best',
     'postprocessors': [{
         'key': 'FFmpegExtractAudio',
@@ -28,7 +30,7 @@ ydl = youtube_dl.YoutubeDL({
         'preferredquality': '140',
     }],
 } if config.MODE == 'audio' else {
-    'outtmpl': 'tmp/tmp_file.%{ext}'
+    'outtmpl': f'{ABSOLUTE_PATH}/tmp/tmp_file.%(ext)'
 })
 conn = sqlite3.connect('bot.db')
 c = conn.cursor()
@@ -61,8 +63,8 @@ def download_then_send(video_id):
     if config.MODE == 'audio':
         bot.send_file(
             config.TELEGRAM_CHAT_ID,
-            file='tmp/tmp_file.mp3',
-            thumb='tmp/thumb.jpg',
+            file=f'{ABSOLUTE_PATH}/tmp/tmp_file.mp3',
+            thumb=f'{ABSOLUTE_PATH}/tmp/thumb.jpg',
             attributes=[
                 types.DocumentAttributeAudio(
                     voice=False,
@@ -72,11 +74,11 @@ def download_then_send(video_id):
                 )
             ],
         )
-        os.remove('tmp/tmp_file.mp3')
+        os.remove(f'{ABSOLUTE_PATH}/tmp/tmp_file.mp3')
     elif config.MODE == 'video':
         bot.send_file(config.TELEGRAM_CHAT_ID, file='tmp/tmp_file.mp4')
-        os.remove('tmp/tmp_file.mp4')
-    os.remove('tmp/thumb.jpg')
+        os.remove(f'{ABSOLUTE_PATH}/tmp/tmp_file.mp4')
+    os.remove(f'{ABSOLUTE_PATH}/tmp/thumb.jpg')
     c.execute('INSERT INTO urls VALUES(?)', (video_id, ))
     conn.commit()
 
